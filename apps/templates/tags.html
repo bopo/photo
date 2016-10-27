@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load thumbnail %}
+<div class="content clearfix">
+    <div class="mod-common clearfix">
+        <div class="mod-channel">
+            <div class="channel-title">
+                <h2>Tag:{{tags.title}}</h2>
+                <div class="channel-right clearfix">
+                    <span id="sogou-ad1">
+                      <script src="/static/image/Advertising.php" type="text/javascript"></script>
+                    </span>
+                </div>
+            </div>
+            <div class="channel-ctn">
+              <div class="post-list clearfix" style="width:1000px;">
+              {% for photo in photos %}
+              <div class="list-box">
+                  <div class="preview">
+                      <a target="_blank" href="{% url 'detail' photo.id %}" title="{{photo.title}}">
+                        <img src="/static/image/grey.gif" data-original="{{photo.cover.url}}" border="0" alt="{{photo.title}}">
+                      </a>
+                      <div class="detail mt5">
+                        <h3><a href="{% url 'detail' photo.id %}" title="{{photo.title}}" target="_blank">{{photo.title}}</a></h3>
+                        <span class="postdate">{{ photo.pub_date|date:"Y-m-d H:i:s" }}</span>
+                      </div>
+                      <span class='num'>{{photo.count}}张</span>
+                  </div>
+                  <div class="listline"></div>
+                  <div class="pdw10">
+                    <div class="tags">
+                      {% for tag in photo.tags.all %}
+                      {% if forloop.counter <= 3 %}
+                      <a href='{% url 'tags' tag.title %}'>{{tag.title}}</a>
+                      {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="listline"></div>
+                  <div class="pdw10">
+                      <div class="fields">
+                        <span><i class="view icon"></i>{{ photo.views }}</span>
+                        <span><i class="like icon"></i>{{ photo.likes }}</span>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+
+            </div>
+            
+            <div class="pages">
+              <ul>
+                {% if photos.has_previous %}
+                <li class="prev"><a href="?page={{ photos.previous_page_number }}"></a></li>
+                {% else %}
+                <li class="prev"><a href="#"></a></li>
+                {% endif %}
+                {% if photos.paginator.page_range %}
+                {% for page in photos.paginator.page_range %}
+                {% if forloop.counter <= photos.number|add:"5" and forloop.counter|add:"5" >= photos.number%}
+                {% ifequal page photos.number %}
+                <li class="pagecur"><a href="#">{{ page }}</a></li>
+                {% else %}
+                <li><a href='?page={{ page }}'>{{ page }}</a></li>
+                {% endifequal %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% if photos.has_next %}
+                <li class="next"><a href='?page={{ photos.next_page_number }}'></a></li>
+                {% else %}
+                <li class="next"><a href="#"></a></li>
+                {% endif %}
+              </ul>
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    <div class="mod-ad980">
+      <script src="/static/image/Advertising.php" type="text/javascript"></script>
+    </div>
+</div>
+{% endblock %}
