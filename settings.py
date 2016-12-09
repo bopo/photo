@@ -100,25 +100,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.flatpages',
-    # 'django.contrib.webdesign',
-    # 'filebrowser',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'category',
-    # 'djcelery',
 
-    'mptt',
-    # 'django_select2',
-    'suit_redactor',
-    # 'suit_ckeditor',
-    # 'filer',
         
+    'mptt',
     'apps',
-    # 'category',
-    #'south',
-    # 'uuslug',
-    # 'social_login',
-    # 'userena',
+    'category',
+    'suit_redactor',
     'easy_thumbnails',
 )
 
@@ -130,8 +119,17 @@ ADMIN_MEDIA_PREFIX = '/media/'
 STATIC_ROOT = os.path.join(HERE,  'assets', 'static')
 THUMB_ROOT = os.path.join(HERE, 'assets', 'media', 'thumb')
 MEDIA_ROOT = os.path.join(HERE, 'assets', 'media')
-# 333
 
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# STATICFILES_DIRS = (
+#     os.path.join(HERE, "assets", 'static'),
+# )
+
+
+# STATICFILES_FINDERS = (
+#     "django.contrib.staticfiles.finders.FileSystemFinder",
+#     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
+# )
 # Additional locations of static files
 # STATICFILES_DIRS = (
 #     os.path.join(STATIC_ROOT),

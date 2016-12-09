@@ -1,8 +1,5 @@
 django
-south
 Pillow
-#MySQL-python
-misaka
 Markdown
 Pygments
 gunicorn
@@ -11,16 +8,12 @@ django-suit
 django-attachments
 django-userena
 django-ckeditor
-dj-scaffold
-django-devserver
 django-debug-toolbar
 django_compressor
 django-filebrowser
 django-taggit
 django-taggit-templatetags
 django-pagination
-django-helper>=0.8.4
-django-celery
 django-mptt
 django-select2
 django-filer
@@ -28,5 +21,4 @@ django-suit_ckeditor
 django-suit_redactor
 channels
 django-baker
-asgi_redis
-cython
+gevent
