@@ -1,0 +1,13 @@
+# django-nose
+
+coverage
+doctest2
+flake8
+pytest
+mock
+nose
+tox
+
+#django-test-plus
+#django-selenium-clean
+#django-webdriver

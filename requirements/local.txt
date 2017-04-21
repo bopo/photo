@@ -1,0 +1,10 @@
+-r base.txt
+django-debug-toolbar
+whitenoise
+
+jupyter
+fabric
+honcho
+
+click
+plan

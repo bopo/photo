@@ -1,0 +1,8 @@
+-i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+django==1.11.*
+easy_thumbnails 
+django-pagination 
+django-suit 
+django-mptt
+
+django-suit-ckeditor
