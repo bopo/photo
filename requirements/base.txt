@@ -5,4 +5,11 @@ django-pagination
 django-suit 
 django-mptt
 
-django-suit-ckeditor
+# django-suit-ckeditor
+django-environ
+django-secure
+django_extensions
+django-reversion==1.10.2
+django-imagekit
+django-import-export
+whitenoise

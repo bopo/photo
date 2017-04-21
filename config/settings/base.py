@@ -2,8 +2,14 @@
 # Django settings for testproject project.
 import os
 import sys
-HERE = os.path.dirname(__file__)
-# ASSETS = os.path.join(HERE, 'assets')
+import environ
+
+ROOT_DIR = environ.Path(__file__) - 3
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+env = environ.Env()
+
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='s4lk7ni)@9n0+4a!2_$vss8hqks_0#f_ia%i8k!djc87y$@0x5')
 
 ALLOWED_HOSTS = ('*')
 
@@ -12,24 +18,10 @@ DEBUG = True
 ADMINS = ()
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.mysql',
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(HERE, 'sqlite3.db'),
-        # 'NAME': 'django',
-        # 'USER': 'root',
-        # 'PASSWORD': '123',
-        # 'HOST': 'localhost',
-        # 'PORT': '3306',
-        # 'DEFAULT_CHARSET': 'utf8',
-    }
-}
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(HERE, 'runtime/_cache'),
+        'LOCATION': os.path.join(BASE_DIR, 'runtime/_cache'),
     },
     'locmem': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -47,7 +39,6 @@ SITE_ID = 1
 
 
 USE_ETAGS = True
-SECRET_KEY = 'vaO4Y<g#YRWG8;Md8noiLp>.w(w~q_b=|1`?9<x>0KxA%UB!63'
 
 LANGUAGE_CODE = 'zh-hans'
 
@@ -85,11 +76,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 # TEMPLATE_DIRS = (
-# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+# Put strings ROOT_DIR, like "/home/html/django_templates" or "C:/www/django/templates".
 # Always use forward slashes, even on Windows.
 # Don't forget to use absolute paths, not relative paths.
-#    os.path.join(HERE, 'templates_plus'),
-#    os.path.join(HERE, 'templates'),
+#    os.path.join(ROOT_DIR, 'templates_plus'),
+#    os.path.join(ROOT_DIR, 'templates'),
 #)
 
 ROOT_URLCONF = 'config.urls'
@@ -108,19 +99,25 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     'easy_thumbnails',
-    # 'service.category',
     'service.portal',
     'mptt',
+
+    'imagekit',
+    'reversion',
+    'import_export',
+    'django_extensions',
 )
 
-STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 
 ADMIN_MEDIA_PREFIX = '/media/'
 
-STATIC_ROOT = os.path.join(HERE,  'assets', 'static')
-THUMB_ROOT = os.path.join(HERE, 'assets', 'media', 'thumb')
-MEDIA_ROOT = os.path.join(HERE, 'assets', 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'assets', 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'assets', 'media')
+THUMB_ROOT = os.path.join(BASE_DIR, '..', 'assets', 'media', 'thumb')
+
+
 # 333
 
 # Additional locations of static files
@@ -157,7 +154,7 @@ TEMPLATES = [
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-        # 'DIRS': [],
+        'DIRS': [],
         # 'APP_DIRS': True,
         'OPTIONS': {
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
@@ -178,7 +175,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                # Your stuff: custom template context processors go here
+                # Your stuff: custom template context processors go ROOT_DIR
             ],
         },
     },

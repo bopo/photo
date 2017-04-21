@@ -3,69 +3,51 @@
 import os
 import time
 
-import environ
-
-from fabric.api import cd, env, local, run, task
+from fabric.api import cd, env, local, run, task, put
 from fabric.context_managers import prefix
-from fabric.contrib import django, project
+from fabric.contrib import project
 from fabric.contrib.console import prompt
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
-os.environ.setdefault("PRODUCTION_HOSTS", "")
+# os.environ.setdefault("PRODUCTION_HOSTS", "")
 
-environ.Env.read_env()
-env = environ.Env()
+# env = environ.Env()
+# environ.Env.read_env()
 
-PRODUCTION_HOSTS = env('PRODUCTION_HOSTS', None)
+# PRODUCTION_HOSTS = env('PRODUCTION_HOSTS', None)
 # django.settings_module('config.settings.local')
 
-env.hosts = PRODUCTION_HOSTS
+# env.hosts = ['root@101.200.136.70']
+# env.excludes = (
+#     "*.pyc", "*.db", ".DS_Store", ".coverage", ".git", ".hg", ".tox", ".idea/",
+#     'assets/', 'runtime/', 'node_modules', 'db.sqlite3', '*.ipynb')
+
+# env.remote_dir = '/home/apps/sports'
+# env.local_dir = '.'
+# env.database = 'sports'
 
 
-env.fixtures = (
-    'flatpages',
-    'restful.goodscategory',
-    'restful.preselectioncategory',
-    'restful.total',
-    'restful.goods',
-    'restful.collect',
-    'restful.prompt',
-    'restful.banner',
-    'restful.holiday',
-    'restful.queryrule',
-    'consumer.customuser',
-)
+@task
+def venv():
+    with prefix('source /usr/local/bin/virtualenvwrapper.sh'):
+        run('mkvirtualenv sports')
 
-env.excludes = (
-    "*.pyc", "*.db", ".DS_Store", ".coverage", ".git", ".hg", ".tox", ".idea/",
-    'assets/', 'runtime/', 'node_modules', 'itchat.kpi', 'db.sqlite3', '*.ipynb')
+    with prefix('workon sports'), cd(env.remote_dir):
+        run('pip install -r requirements_dev.txt')
 
-env.remote_dir = '/home/apps/stock'
-env.local_dir = '.'
-env.database = 'stock'
-env.check_urls = {
-    "start": "http://api.gjingxi.com/api/v1.0/start/",
-    "first": "http://api.gjingxi.com/api/v1.0/first/",
-    "trade": "http://api.gjingxi.com/api/v1.0/trade/",
-    "bests": "http://api.gjingxi.com/api/v1.0/bests/",
-    "query": "http://api.gjingxi.com/api/v1.0/query/",
-    "random": "http://api.gjingxi.com/api/v1.0/random/",
-    "search": "http://api.gjingxi.com/api/v1.0/search/",
-    "category": "http://api.gjingxi.com/api/v1.0/category/",
-    "feedback": "http://api.gjingxi.com/api/v1.0/feedback/",
-    "location": "http://api.gjingxi.com/api/v1.0/location/",
-    "recommend": "http://api.gjingxi.com/api/v1.0/recommend/",
-    "watchword": "http://api.gjingxi.com/api/v1.0/watchword/",
-    "collect": "http://api.gjingxi.com/api/v1.0/collect/",
-    "preselection": "http://api.gjingxi.com/api/v1.0/preselection/"
-}
+
+@task
+def conf():
+    put('sports_server.conf', '/etc/supervisor/conf.d/')
+    put('sports_chatbot.conf', '/etc/supervisor/conf.d/')
 
 
 @task
 def cron(action='check'):
-    with prefix('workon surprise'), cd(env.remote_dir):
+    with prefix('workon sports'), cd(env.remote_dir):
         run('python schedule.py %s' % action)
+
 
 @task
 def d2u():
@@ -73,6 +55,7 @@ def d2u():
     local('find . -name "*.py" -exec dos2unix {} \;')
     local('find . -name "*.css" -exec dos2unix {} \;')
     local('find . -name "*.js" -exec dos2unix {} \;')
+
 
 @task
 def cert():
@@ -102,18 +85,29 @@ def test(task=''):
 
 @task
 def static():
-    with prefix('workon surprise'), cd(env.remote_dir):
+    with prefix('workon sports'), cd(env.remote_dir):
         run('python manage.py collectstatic --dry-run -c --noinput')
 
+@task
+def st():
+    local('python manage.py collectstatic --dry-run -c --noinput')
 
 @task
 def rsync(static=None):
-    clean()
-
-    static and static()
-
     local_dir = os.getcwd() + os.sep
     return project.rsync_project(remote_dir=env.remote_dir, local_dir=local_dir, exclude=env.excludes, delete=True)
+
+
+@task
+def pull():
+    with prefix('workon sports'), cd(env.remote_dir):
+        run('git pull')
+        run('pip install -r requirements.txt')
+
+    migrate()
+
+    run('/usr/bin/supervisorctl stop sports')
+    run('/usr/bin/supervisorctl start sports')
 
 
 @task
@@ -123,19 +117,18 @@ def push(static=None):
 
 @task
 def migrate():
-    with prefix('workon surprise'), cd(env.remote_dir):
+    with prefix('workon sports'), cd(env.remote_dir):
         run('''DJANGO_SETTINGS_MODULE='config.settings.local' python manage.py migrate''')
 
 
 @task(alias='rr')
 def restart():
-    with prefix('workon surprise'), cd(env.remote_dir):
-        run('/usr/bin/supervisorctl restart stock')
+    run('supervisorctl restart sports')
 
 
 @task
 def stop():
-    run('/usr/bin/supervisorctl stop stock')
+    run('/usr/bin/supervisorctl stop sports')
 
 
 @task
@@ -245,7 +238,7 @@ def dumpdata(remote=None):
         if not remote:
             local('python manage.py dumpdata {} > database/fixtures/00{}_{}.json'.format(fixture, num, fixture))
         else:
-            with prefix('workon surprise'), cd(env.remote_dir):
+            with prefix('workon sports'), cd(env.remote_dir):
                 run('python manage.py dumpdata {} > database/fixtures/00{}_{}.json'.format(fixture, num, fixture))
 
         num += 1
@@ -259,7 +252,7 @@ def loaddata(remote=None):
         if not remote:
             local('python manage.py loaddata database/fixtures/00{}_{}.json'.format(num, fixture))
         else:
-            with (prefix('workon surprise'), cd(env.remote_dir)):
+            with (prefix('workon sports'), cd(env.remote_dir)):
                 run(
                     'DJANGO_SETTINGS_MODULE=config.settings.prod python manage.py loaddata database/fixtures/00{}_{}.json'.format(
                         num, fixture))
@@ -312,7 +305,7 @@ def syncdb(action='down'):
         upload=upload)
 
     # if action == 'up':
-    #     with prefix('workon surprise'), cd(env.remote_dir):
+    #     with prefix('workon sports'), cd(env.remote_dir):
     #         run('python manage.py loaddata database/fixtures/*.json')
     # else:
     # restdb()
@@ -324,10 +317,10 @@ def dbmigrate():
     run('manage.py dumpdata --format=json > db.json')
 
     # rsync files.
-    local('rsync -ave ssh rsync -ave ssh root@101.200.136.70:/home/apps/stock /home/apps')
+    local('rsync -ave ssh rsync -ave ssh root@101.200.136.70:/home/apps/sports /home/apps')
 
     # stop service
-    local('/usr/bin/supervisorctl stop stock')
+    local('/usr/bin/supervisorctl stop sports')
 
     # migrate db
     local('dropdb {database}'.format(database=env.database))
@@ -337,12 +330,12 @@ def dbmigrate():
     local('python manage.py loaddata db.json')
 
     # start service
-    local('/usr/bin/supervisorctl start stock')
+    local('/usr/bin/supervisorctl start sports')
 
 
 @task
 def req():
-    with prefix('workon surprise'), cd(env.remote_dir):
+    with prefix('workon sports'), cd(env.remote_dir):
         run('pip install -r requirements/prod.txt')
 
 
@@ -355,3 +348,16 @@ def check():
 def init():
     setup()
     loaddata()
+
+
+@task
+def start(name):
+    local('git flow feature start %s' % name)
+
+@task
+def publish(name):
+    local('git flow feature publish %s' % name)
+
+@task
+def finish(name):
+    local('git flow feature finish %s' % name)
