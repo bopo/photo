@@ -7,14 +7,13 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 from django.forms import TextInput, ModelForm, Textarea, Select
 
-from suit_ckeditor.widgets import CKEditorWidget
-from suit_redactor.widgets import RedactorWidget
+# from suit_ckeditor.widgets import CKEditorWidget
+# from suit_redactor.widgets import RedactorWidget
 
 from suit.admin import SortableTabularInline, SortableModelAdmin
 from suit.widgets import NumberInput, SuitDateWidget, SuitSplitDateTimeWidget, EnclosedInput, LinkedSelect, AutosizedTextarea
 # from reversion import VersionAdmin
 from suit.admin import SortableModelAdmin
-
 from .models import Photo, Weblink, Notice
 
 def published(modeladmin, request, queryset):
@@ -123,7 +122,7 @@ class NoticeForm(ModelForm):
         # model = Notice
         widgets = {
             # 'content': RedactorWidget(editor_options = {'autoresize': True}),
-            'content': RedactorWidget,
+            # 'content': RedactorWidget,
             # 'content': RedactorWidget(editor_options={'buttons': ['html', '|', 'formatting', '|', 'bold', 'italic']}),
             # 'content': CKEditorWidget(editor_options=_ck_editor_config),
         }

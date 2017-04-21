@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from django.db import models
-from .settings import MEDIA_ROOT, THUMB_ROOT, MEDIA_URL
+# from .settings import MEDIA_ROOT, THUMB_ROOT, MEDIA_URL
+from django.conf import settings
+
 # from ckeditor.fields import RichTextField
 # from social.models import AbstractBaseSiteUser, AbstractInnerUserAuth, AbstractUserInfo
 
@@ -177,15 +179,6 @@ class Notice(models.Model):
     def __unicode__(self):
         return self.subject
         
-    # class Meta:
-    #     verbose_name = u'公告管理'
-    #     verbose_name_plural = u'公告管理'
-        # app_label = u"我的应用"
-        # db_table = 'apps_notice'
-
-# class UserAuth(AbstractInnerUserAuth):
-#     email = models.CharField(max_length=255, unique=True)
-#     password = models.CharField(max_length=128)
-
-# class UserInfo(AbstractUserInfo):
-#     pass
+    class Meta:
+        verbose_name = u'公告管理'
+        verbose_name_plural = u'公告管理'
