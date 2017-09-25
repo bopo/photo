@@ -1,19 +1,21 @@
-# from django.contrib.sitemaps import FlatPageSitemap, GenericSitemap
+# -*- coding: utf-8 -*-
+# from __future__ import unicode_literals
+
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.conf import settings
 import django
 
-# admin.autodiscover()
-
 urlpatterns = (
-    url(r'', include('service.portal.urls')),
-    # url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT}),
-    # url(r'^ckeditor/', include('ckeditor.urls')),
-#    url(r'^feedback/', include('feedback.urls')),
-    # url(r'^admin/doc/', include(django.contrib.admindocs.urls)),
+    url(r'^', include('service.frontend.urls')),
     url(r'^admin/', include(admin.site.urls)),
-
-    url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT}),
-    # url(r'^static/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.STATIC_ROOT}),    
+    url(r'^simditor/', include('simditor.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 )
+
+if settings.DEBUG:
+    urlpatterns += (url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT}),)
+    
+    if 'debug_toolbar' in settings.INSTALLED_APPS:
+        import debug_toolbar
+        urlpatterns += (url(r'^__debug__/', include(debug_toolbar.urls)),)

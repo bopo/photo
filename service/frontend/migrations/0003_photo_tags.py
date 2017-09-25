@@ -8,13 +8,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('portal', '0002_auto_20170922_1607'),
+        ('frontend', '0002_auto_20170922_1607'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='photo',
             name='tags',
-            field=models.ManyToManyField(to='portal.Tags'),
+            field=models.ManyToManyField(to='frontend.Tags'),
         ),
     ]

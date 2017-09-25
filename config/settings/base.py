@@ -59,20 +59,19 @@ HEADER_DATE_FORMAT = 'Y-m-d H:i:s'
 #     'django.template.loaders.app_directories.Loader',
 # )
 
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 
-    # 'django.middleware.locale.LocaleMiddleware',
-    # 'django.middleware.cache.CacheMiddleware',
-    # 'django.middleware.doc.XViewMiddleware',
-    # 'django.middleware.gzip.GZipMiddleware',
-
-    # 'minidetector.Middleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
 # TEMPLATE_DIRS = (
@@ -86,96 +85,33 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'config.urls'
 
 INSTALLED_APPS = (
-    'suit',
+    'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.admindocs',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sitemaps',
-    'django.contrib.flatpages',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
-
-    'easy_thumbnails',
-    'service.portal',
-    # 'mptt',
-
-    'imagekit',
-    'reversion',
-    # 'import_export',
-    'django_extensions',
+    'django.contrib.sites',
+    'django.contrib.flatpages',    
 )
-
-MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
-
-ADMIN_MEDIA_PREFIX = '/media/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, '..', 'assets', 'static')
-MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'assets', 'media')
-THUMB_ROOT = os.path.join(BASE_DIR, '..', 'assets', 'media', 'thumb')
-
-
-# 333
-
-# Additional locations of static files
-# STATICFILES_DIRS = (
-#     os.path.join(STATIC_ROOT),
-#     os.path.join(STATIC_ROOT, 'js'),
-#     os.path.join(STATIC_ROOT, 'css'),
-# )
-
-
-# 333
-# from django.conf.settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
-
-# TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-#     'django.core.context_processors.request',
-# )
-
-SUIT_CONFIG = {'ADMIN_NAME': '图片网站信息管理'}
-
-ADMIN_MEDIA_PREFIX = '/media/'
-
-# 333
-
-THUMBNAIL_ALIASES = {
-    '': {
-        'thumb': {'size': (208, 291), 'crop': True},
-        'rep': {'size': (254, 255), 'crop': True},
-        'rep2': {'size': (203, 125), 'crop': True},
-    },
-}
 
 TEMPLATES = [
     {
-        # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         'DIRS': [],
-        # 'APP_DIRS': True,
+        'APP_DIRS': True,
         'OPTIONS': {
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
-            'debug': DEBUG,
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
-            # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ],
-            # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+
+                'django.template.context_processors.tz',
                 'django.template.context_processors.i18n',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
-                # Your stuff: custom template context processors go ROOT_DIR
             ],
         },
     },
@@ -183,3 +119,17 @@ TEMPLATES = [
 
 ALLOWED_HOSTS = ['*']
 SITE_ID = 1
+
+try:
+    from .cons import *
+    from .apps import *
+    from .suit import *
+
+    from .static import *
+
+    # from .celery import *
+    # from .cache import *
+    from .thumb import *
+
+except ImportError as e:
+    raise e

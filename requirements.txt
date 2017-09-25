@@ -1,5 +1,5 @@
 -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
-django==1.11.*
+django
 easy_thumbnails 
 django-pagination 
 django-suit 
@@ -10,4 +10,12 @@ django_extensions
 django-reversion
 django-imagekit
 django-import-export
+django-simditor
+
 whitenoise
+
+django-debug_toolbar 
+drf_generators
+click
+raven
+plan

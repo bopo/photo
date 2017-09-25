@@ -56,7 +56,7 @@
 						 	<div class="list-box">
 							 <div class="preview">
 								 <a target="_blank" href="{% url 'detail' pic.id %}" title="{{pic.title}}">
-								 	<img src="{{pic.cover.url}}" alt="{{pic.title}}" />
+								 	<img src="{{pic.cover|thumbnail_url:'cov'}}" alt="{{pic.title}}" />
 								 </a>
 								 <div class="detail mt5">
 									 <h3><a target="_blank" href="{% url 'detail' pic.id %}" title="{{pic.title}}">{{pic.title}}</a></h3>

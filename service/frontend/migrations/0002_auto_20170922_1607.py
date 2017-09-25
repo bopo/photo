@@ -8,7 +8,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('portal', '0001_initial'),
+        ('frontend', '0001_initial'),
     ]
 
     operations = [

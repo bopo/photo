@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-{# {% load thumbnail %} #}
+{% load thumbnail %}
 <div class="content clearfix">
 	<div class="mod-common clearfix">
 		<div class="mod-channel">
@@ -22,7 +22,7 @@
 						<div class="list-box">
 							<div class="preview">
 								<a target="_blank" href="{% url 'detail' photo.id %}" title="{{ photos.title }}">
-									<img src="/static/image/grey.gif" data-original="{{photo.cover.url}}" border="0" alt="{{ photo.title }}">
+									<img src="/static/image/grey.gif" data-original="{{photo.cover|thumbnail_url:'cov'}}" border="0" alt="{{ photo.title }}">
 								</a>
 								<div class="detail mt5">
 									<h3><a href="{% url 'detail' photo.id %}" title="{{ photo.title }}" target="_blank">{{ photo.title }}</a></h3>

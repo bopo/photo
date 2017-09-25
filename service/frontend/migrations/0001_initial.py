@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(help_text=b'Short descriptive name for this category.', max_length=200, verbose_name='\u5206\u7c7b\u6807\u9898')),
                 ('subtitle', models.CharField(blank=True, default=b'', help_text=b'Some titles may be the same and cause confusion in admin UI. A subtitle makes a distinction.', max_length=200, null=True, verbose_name='\u526f\u6807\u9898')),
                 ('slug', models.SlugField(help_text=b'Short descriptive unique name for use in urls.', max_length=255, unique=True, verbose_name='slug')),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='portal.Category', verbose_name='\u96b6\u5c5e\u4e8e')),
+                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='frontend.Category', verbose_name='\u96b6\u5c5e\u4e8e')),
             ],
             options={
                 'ordering': ('title',),
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
                 ('ordering', models.IntegerField(default=9999, verbose_name='\u6392\u5e8f')),
                 ('recommend', models.BooleanField(default=0, verbose_name='\u63a8\u8350')),
                 ('status', models.BooleanField(default=False, verbose_name='\u53d1\u5e03\u72b6\u6001')),
-                ('category', models.ManyToManyField(to='portal.Category')),
+                ('category', models.ManyToManyField(to='frontend.Category')),
             ],
             options={
                 'verbose_name': '\u76f8\u518c',
@@ -88,6 +88,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='photo',
             name='tags',
-            field=models.ManyToManyField(to='portal.Tags'),
+            field=models.ManyToManyField(to='frontend.Tags'),
         ),
     ]

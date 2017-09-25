@@ -19,7 +19,7 @@ urlpatterns = (
   url(r'^new.html', views.new, name='new'),
   url(r'^rec.html', views.rec, name='rec'),
   url(r'^hot.html', views.hot, name='hot'),
-  url(r'^feed/rss\.xml$', feeds.RSS, name='feed_rss_xml'),
+  url(r'^feed/rss\.xml$', feeds.RSS(), name='feed_rss_xml'),
   # url(r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap',
      # {'sitemaps': sitemaps}),
 )
