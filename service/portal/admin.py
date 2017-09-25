@@ -14,7 +14,7 @@ from suit.admin import SortableTabularInline, SortableModelAdmin
 from suit.widgets import NumberInput, SuitDateWidget, SuitSplitDateTimeWidget, EnclosedInput, LinkedSelect, AutosizedTextarea
 # from reversion import VersionAdmin
 from suit.admin import SortableModelAdmin
-from .models import Photo, Weblink, Notice
+from .models import Photo, Weblink, Notice, Category,Tags
 
 def published(modeladmin, request, queryset):
     queryset.update(status=1)
@@ -60,6 +60,7 @@ class TabbedPhotoAdmin(ModelAdmin):
     sortable = 'ordering'
     form = PhotoForm
     actions = [published, recommend]
+
     list_display = ('title', 'views', 'likes', 'count', 'pub_date', 'recommend', 'status')
     search_fields = ('title', 'pub_date')
 
@@ -137,6 +138,11 @@ class NoticeAdmin(ModelAdmin):
         ('Content', {'classes': ('full-width',),'description': 'Full width example', 'fields': ('content',)})
     ]
 
+class CategoryAdmin(ModelAdmin):
+    list_display = ('title','subtitle')
+
+admin.site.register(Tags)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Notice, NoticeAdmin)
 admin.site.register(Weblink, WeblinkAdmin)
 admin.site.register(Photo, TabbedPhotoAdmin)

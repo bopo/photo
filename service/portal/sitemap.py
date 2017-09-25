@@ -1,4 +1,3 @@
-# sitemaps.py
 from django.contrib import sitemaps
 from django.core.urlresolvers import reverse
 from .models import Photo

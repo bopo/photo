@@ -1,9 +1,0 @@
-# django-rest-swagger
-pydocs
-mkdocs
-sphinx
-pydoctor
-sphinx_rtd_theme
-
-# gem install yard
-# gem install jazzy

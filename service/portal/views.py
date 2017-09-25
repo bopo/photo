@@ -38,21 +38,21 @@ def home(request):
 
 @cache_page(60 * 15)
 def category(request, slug):
-    # category = get_object_or_404(Category, slug=slug)
-    # photo_list = category.photo_set.order_by('-id').all()
-    # paginator = Paginator(photo_list, 20)
-    # page = request.GET.get('page')
+    category = get_object_or_404(Category, slug=slug)
+    photo_list = category.photo_set.order_by('-id').all()
+    paginator = Paginator(photo_list, 20)
+    page = request.GET.get('page')
 
-    # try:
-    #     photos = paginator.page(page)
-    # except PageNotAnInteger:
-    #     photos = paginator.page(1)
-    # except EmptyPage:
-    #     photos = paginator.page(paginator.num_pages)
+    print(slug)
 
-    # menu = navigation()
+    try:
+        photos = paginator.page(page)
+    except PageNotAnInteger:
+        photos = paginator.page(1)
+    except EmptyPage:
+        photos = paginator.page(paginator.num_pages)
 
-    # context = {'category': category, 'photos': photos, 'menu': navigation()}
+    menu = navigation()
     return render(request, 'category.html', locals())
 
 
@@ -151,13 +151,10 @@ def waterfall(request, id):
         photo_list = Photo.objects.filter(cover__startswith='cover/')
 
         if id == 1:
-            # hot
             photo_list.order_by('-likes')
         elif id == 2:
-            # ret
             photo_list.order_by('-id').filter(recommend=1)
         else:
-            # new
             photo_list.order_by('-id')
 
         paginator = Paginator(photo_list, 12)

@@ -21,7 +21,7 @@ MANAGERS = ADMINS
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(BASE_DIR, 'runtime/_cache'),
+        'LOCATION': os.path.join(BASE_DIR, '..','runtime','_cache'),
     },
     'locmem': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -100,11 +100,11 @@ INSTALLED_APPS = (
 
     'easy_thumbnails',
     'service.portal',
-    'mptt',
+    # 'mptt',
 
     'imagekit',
     'reversion',
-    'import_export',
+    # 'import_export',
     'django_extensions',
 )
 

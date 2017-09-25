@@ -10,12 +10,12 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 import os
 import sys
 
-HERE = os.path.dirname(__file__)
+# HERE = os.path.dirname(__file__)
 
-sys.path.append(HERE)
-sys.path.append(os.path.join(HERE, 'thirdparty'))
+# sys.path.append(HERE)
+# sys.path.append(os.path.join(HERE, 'thirdparty'))
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 
 from django.core.wsgi import get_wsgi_application
 from whitenoise.django import DjangoWhiteNoise
