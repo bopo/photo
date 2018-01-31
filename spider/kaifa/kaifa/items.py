@@ -6,14 +6,14 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapy_djangoitem import DjangoItem
+from apps.models import Photo
 
-
-class KaifaItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    title = scrapy.Field()
-    cover = scrapy.Field()
+class KaifaItem(DjangoItem):
+    django_model = Photo
     
+    image_urls = scrapy.Field()
     file_urls = scrapy.Field()
     item_cats = scrapy.Field()
     item_tags = scrapy.Field()
+    url = scrapy.Field()

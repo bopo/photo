@@ -8,6 +8,15 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+import sys, os
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(HERE, '..', '..', '..', 'server'))
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
+import django
+django.setup()
+
 
 BOT_NAME = 'kaifa'
 
@@ -17,6 +26,7 @@ NEWSPIDER_MODULE = 'kaifa.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'kaifa (+http://www.yourdomain.com)'
+USER_AGENT  = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -33,7 +43,7 @@ ROBOTSTXT_OBEY = True
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = True
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -68,6 +78,16 @@ ROBOTSTXT_OBEY = True
 #    'kaifa.pipelines.KaifaPipeline': 300,
 #}
 
+MEDIA_ALLOW_REDIRECTS = True
+DOWNLOAD_TIMEOUT  = 500
+IMAGES_STORE      = '../stores/image'
+FILES_STORE       = '../stores/files'
+ITEM_PIPELINES    = {
+    'kaifa.pipelines.KaifaCoverPipeline': 200,
+    # 'kaifa.pipelines.KaifaImagesPipeline': 400,
+    'kaifa.pipelines.KaifaFilesPipeline': 300,
+    # 'kaifa.pipelines.KaifaTagsPipeline': 500,
+}
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
