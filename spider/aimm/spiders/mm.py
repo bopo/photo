@@ -8,18 +8,24 @@ from scrapy import log
 from aimm.items import AimmItem
 from pprint import pprint
 from os import path
-import json, urllib
+import json, urllib.request, urllib.parse, urllib.error
+# http://aim.92kaifa.com/e/extend/api.php?id=5368
+# response.xpath('//div[@class="mod-channel"]/div[@class="channel-ctn"]')[0].xpath('//div[@class="list-box"]/div[@class="preview"]/a/img/@alt').extract(
+# response.xpath('//div[@class="mod-channel"]/div[@class="channel-ctn"]')[0].xpath('//div[@class="list-box"]/div[@class="preview"]/div[@class="detail mt5"]/span/text()').extract()
+# lb.xpath('//div[@class="pdw10"]/div[@class="tags"]/a/text()').extract()
+# url = response.xpath('//li[@class="next"]/a/@href').extract()[0]
+# p.xpath('span[@class="num"]/text()').extract()
 
 class MmSpider(BaseSpider):
     name = 'mm'
-    allowed_domains = ['95mm.com']
+    allowed_domains = ['aimm.92kaifa.com']
     start_urls = [
-        'http://www.95mm.com/category/qingchun/',
-        'http://www.95mm.com/category/mingxing/',
-        'http://www.95mm.com/category/wangluo/',
-        'http://www.95mm.com/category/xinggan/',
-        'http://www.95mm.com/category/mote/',
-        'http://www.95mm.com/category/siwa/',
+        'http://aimm.92kaifa.com/qingchun/',
+        'http://aimm.92kaifa.com/mingxing/',
+        'http://aimm.92kaifa.com/wangluo/',
+        'http://aimm.92kaifa.com/xinggan/',
+        'http://aimm.92kaifa.com/mote/',
+        'http://aimm.92kaifa.com/siwa/',
     ]
 
     def parse(self, response):
@@ -44,7 +50,7 @@ class MmSpider(BaseSpider):
         item['title'] = sel.select('//span[@id="d_picTit"]/text()').extract()[0]
         item['cover'] = cover
 
-        item['file_urls'] = 'http://www.95mm.com/slide-data/data/%s' % pid[0]
+        item['file_urls'] = 'http://aim.92kaifa.com/e/extend/api.php?id=%s' % pid[0]
         item['item_cats'] = sel.select('//div[@class="post-header"]/div[@class="post-info clearfix"]/span/a/text()').extract()[0].strip()
         item['item_tags'] = sel.select('//span[@class="mod-tags"]/dl/dd/a/text()').extract()
 

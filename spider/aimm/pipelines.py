@@ -15,7 +15,7 @@ from unidecode import unidecode
 
 from .settings import FILES_STORE, IMAGES_STORE
 from apps.settings import MEDIA_ROOT
-import shutil, os, json, urllib, hashlib
+import shutil, os, json, urllib.request, urllib.parse, urllib.error, hashlib
 
 from django.utils.encoding import smart_unicode
 from slugify import slugify
@@ -44,7 +44,7 @@ class AimmImagesPipeline(ImagesPipeline):
 
         item['cover'] = 'cover/' + cover[:2] +'/'+ cover[2:4] +'/'+ cover
 
-        print item['cover']
+        print((item['cover']))
 
         return item
 
@@ -52,22 +52,22 @@ class AimmTagsPipeline(object):
 
     def process_item(self, item, spider):
 
-        print item['item_tags'], item['title']
+        print(item['item_tags'], item['title'])
 
         try:
             photo = Photo.objects.get(title = item['title'])
-        except Exception, e:
+        except Exception as e:
             raise DropItem("Item contains no Photo")
             return item
 
-        print item['item_tags']
+        print((item['item_tags']))
 
         for t in item['item_tags']:
             try:
                 default = {'title':t, 'slug': smart_unicode(slugify(unidecode(t)))}
                 tagset  = Tag.objects.get_or_create(title = t, defaults = default)
                 photo.tags.add(tagset[0])
-            except Exception, e:
+            except Exception as e:
                 raise DropItem("Item contains no Tags")
 
         return item
@@ -106,23 +106,23 @@ class AimmFilesPipeline(FilesPipeline):
 
         try:
             Photo.objects.get(title = item['title']).delete()
-        except Exception, e:
+        except Exception as e:
             pass
 
         photo = item.save()
         photo.tags.remove()
 
         try:
-            if u'模特' in item['item_cats']: name = u'模特'
-            if u'丝袜' in item['item_cats']: name = u'丝袜'
-            if u'性感' in item['item_cats']: name = u'性感'
-            if u'明星' in item['item_cats']: name = u'明星'
-            if u'清纯' in item['item_cats']: name = u'清纯'
-            if u'网络' in item['item_cats']: name = u'网络'
+            if '模特' in item['item_cats']: name = '模特'
+            if '丝袜' in item['item_cats']: name = '丝袜'
+            if '性感' in item['item_cats']: name = '性感'
+            if '明星' in item['item_cats']: name = '明星'
+            if '清纯' in item['item_cats']: name = '清纯'
+            if '网络' in item['item_cats']: name = '网络'
             cat = Category.objects.get(title = name)
             photo.category.add(cat)
-        except Exception, e:
-            print e, item['item_cats']
+        except Exception as e:
+            print(e, item['item_cats'])
 
         for t in item['item_tags']:
             try:
@@ -134,13 +134,13 @@ class AimmFilesPipeline(FilesPipeline):
 
                 default = tagset = None
 
-            except Exception, e:
+            except Exception as e:
                 pass
 
         cat   = None
         photo = None
 
-        print item['cover']
+        print((item['cover']))
 
         return item
 
@@ -153,7 +153,7 @@ class AimmFilesPipeline(FilesPipeline):
             file.close()
             data = data.strip('var slide_data = ').strip()
             data = json.loads(data)
-        except Exception, e:
+        except Exception as e:
             raise e
 
         return data

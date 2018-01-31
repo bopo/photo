@@ -18,6 +18,6 @@ class ProxyMiddleware(object):
 
             if proxy:
                 request.meta['proxy'] = proxy
-        except Exception,e:
-            print 'proxy', e
+        except Exception as e:
+            print('proxy', e)
             log.msg(e,level = log.ERROR)
