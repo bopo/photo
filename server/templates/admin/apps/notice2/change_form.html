@@ -1,0 +1,16 @@
+{% extends 'admin/change_form.html' %}
+{% load url from future %}
+{% load i18n %}
+
+{% block after_related_objects %}
+  {{ block.super }}
+  <style type="text/css">
+  .redactor_editor {
+    max-height: 200px;
+  }
+  </style>
+
+  <script type="text/javascript">
+    CKEDITOR.disableAutoInline=true;
+  </script>
+{% endblock %}

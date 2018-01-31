@@ -1,0 +1,262 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="eControl" style="display:none">
+	<div class="ecCont">
+		<div id="ecbSpeed" data-sudaclick="blk_ecbSpeed" style="display:none;">
+			<div id="ecbSpeedInfo" class="buttonCont">5秒</div>
+		</div>
+		<div id="ecbPre" title="上一张" data-sudaclick="blk_ecbPre" style="display:none;"><div class="buttonCont"></div></div>
+		<div id="ecbPlay" data-sudaclick="blk_ecbPlay" style="display:none;">
+			<div id="ecpPlayStatus" class="play"></div>
+		</div>
+		<div id="ecbNext" title="下一张" data-sudaclick="blk_ecbNext" style="display:none;"><div class="buttonCont"></div></div>
+		<div id="ecbLine"><div class="buttonCont"></div></div>
+		<!-- 速度条 begin -->
+		<div id="SpeedBox">
+			<div id="SpeedCont">
+				<div id="SpeedSlide"></div>
+				<div id="SpeedNonius"></div>
+			</div>
+		</div>
+		<!-- 速度条 end -->
+	</div>
+</div>
+
+<div class="content clearfix">
+	<div class="mod-common clearfix">
+		<div class="post-data">
+			<a href="javascript:void(0)"><span class="post-views post-span"><i class="view icon"></i>阅读</span><small id="viewData">0</small></a>
+			<a href="javascript:void(0)" onclick="postDigg('good',{{photo.id}})"><span class="post-comments"><i class="like icon"></i>喜欢</span><small id="likeData">{{photo.likes}}</small></a>
+		</div>
+		<div class="post-header">
+			<h2 class="post-title">
+				<span id="d_picTit">
+					{{photo.title}}
+				</span>
+				<span id="total">(<span class="cC00">0</span>/0)</span>
+			</h2>
+			<div class="post-info clearfix">
+				<span class="post-span"><i class="time icon"></i>{{ photo.pub_date|date:"Y-m-d H:i:s" }}</span>
+				<span class="post-span"><i class="cate icon"></i><a href="{% url 'category' category.slug %}">{{category.subtitle}}</a></span>
+				<span class="post-span" id="ecbMode" data-sudaclick="blk_ecbMode"><i class="list icon"></i><a href="javascript:void(0)">全部图片</a></span>
+				<span class="post-span" id="ecbModeReturn" data-sudaclick="blk_ecbModeReturn" style="display:none"><i class="cont icon"></i><a href="javascript:void(0)">幻灯浏览</a></span>
+				<span class="post-span"><i class="screen icon"></i><a href="javascript:void(0)" id="ecbFullScreen" data-sudaclick="blk_ecbFullScreen">全屏浏览</a></span>
+				<span class="post-span" id="downloadPicObj" data-sudaclick="blk_downloadPicObj"><i class="down icon"></i><a href="javascript:void(0)" onclick="downloadPic()">下载本图</a></span>
+			</div>
+		</div>
+		<div class="mod-single" id="eFramePic">
+			<div class="mod-ad640"><script src="/static/image/Advertising.php" type="text/javascript"></script></div>
+			<!--div class="mod-huaban" id="huaban"></div-->
+			<div id="efpBigPic">
+				<div id="d_BigPic">{# <img src="{{photo.cover}}"/> #}</div>
+				<div id="efpLeftArea" class="arrLeft" title="上一张" data-sudaclick="blk_efpLeftArea"></div>
+				<div id="efpRightArea" class="arrRight" title="下一张" data-sudaclick="blk_efpRightArea"></div>
+			</div>
+			<div class="mod-ad640"><script src="/static/image/Advertising.php" type="text/javascript"></script></div>
+			<div class="mod-ad640"><script src="/static/image/Advertising.php" type="text/javascript"></script></div>
+			<div id="efpTxt">
+				<div id="d_picTime"></div>
+				<div id="d_picIntro"></div>
+			</div>
+			<div class="post-tag clearfix">
+				<span class="mod-tags">
+					<dl>
+						<dt>标签：</dt>
+						{% for t in photo.tags.all %}
+						<dd><a href="{% url 'tags' t.title %}">{{t.title}}</a></dd>
+						{% endfor %}
+					</dl>
+				</span>
+				<span class="mod-bdshare">
+					<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare" style="width:232px; line-height:16px;">
+						<span class="bds_more">分享到：</span>
+						<a class="bds_qzone"></a>
+						<a class="bds_tsina"></a>
+						<a class="bds_huaban"></a>
+						<a class="bds_tqq"></a>
+						<a class="bds_renren"></a>
+						<a class="shareCount"></a>
+					</div>
+				</span>
+			</div>
+			<div class="listline"></div>
+			<div class="post-piclist" id="efpPicList">
+				<div id="efpPreGroup" data-sudaclick="blk_efpPreGroup">
+					<div id="efpPrePic" onmouseover="this.className='selected'" onmouseout="this.className=''">
+						<table cellspacing="0"><tr><td><a href=""><img src="/static/image/no-atlas.jpg" alt="" title="这是第一个图集" /></a></td></tr></table>
+					</div>
+					<div id="efpPreTxt"><a href="#no" title="">&lt;&lt;上一图集</a></div>
+				</div>
+				<div id="efpListLeftArr" onmouseover="this.className='listLeftArr selected'" onmouseout="this.className=''" data-sudaclick="blk_efpListLeftArr"></div>
+				<div id="efpPicListCont" data-sudaclick="blk_efpPicListCont"></div>
+				<div id="efpListRightArr" onmouseover="this.className='selected'" onmouseout="this.className=''" data-sudaclick="blk_efpListRightArr"></div>
+				<div class="nextGroup" id="efpNextGroup" data-sudaclick="blk_efpNextGroup">
+					<div id="efpNextPic" onmouseover="this.className='selected'" onmouseout="this.className=''">
+						<table cellspacing="0"><tr><td><a href=""><img src="/static/image/no-atlas.jpg" alt="" title="这是最后一个图集" /></a></td></tr></table>
+					</div>
+					<div id="efpNextTxt"><a href="#no" title="">下一图集&gt;&gt;</a></div>
+				</div>
+			</div>
+			<div id="endSelect" class="slide-end-tip">
+				<div class="slide-end-bg">浏览结束，继续点击查看下一图集</div>
+				<!--<a id="endSelClose" href="javascript:;" class="slide-end-close" title="关闭">关闭</a>-->
+				<!-- 广告
+				<div class="slide-end-da" id="endSelAd"></div>
+				 广告 -->
+			</div>
+		</div>
+		<div class="mod-single" id="ePicList-Wrap" style="display:none;">
+			<div id="ePicList" class="ePicList clearfix"></div>
+		</div>
+	</div>
+	<div class="mod-ad980"><script src="/static/image/Advertising.php" type="text/javascript"></script></div>
+	<div class="mod-common clearfix">
+		<div class="mod-channel">
+			<div class="channel-title">
+				<h2><i class="icon catag"></i>分类标签</h2>
+				<div class="channel-right clearfix">
+					<span id="sogou-ad1"><script src="/static/image/Advertising.php" type="text/javascript"></script></span>
+				</div>
+			</div>
+
+			{% include 'includes/aperture.html' %}
+			
+		</div>
+	</div>
+	<div class="mod-ad960"><script src="/static/image/Advertising.php" type="text/javascript"></script></div>
+</div>
+{% load staticfiles %}
+<script type="text/javascript" src="{% static "js/epidiascope.js" %}"></script>
+<script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	aimm.init();
+});
+</script>
+
+<!--[if IE 6]>
+<script type="text/javascript">try{document.execCommand('BackgroundImageCache',false,true)}catch(e){}</script>
+<script type="text/javascript"src="/static/js/DD_belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('.icon,.foot_logo');</script>
+<![endif]-->
+
+<script language="javascript" type="text/javascript">
+<!--//--><![CDATA[//><!--
+var dataInfo = {
+	title : '{{photo.title}}',
+	others : {
+		downloadPic : true,
+		PVCountUrl_m : '',
+		PVCountUrl_a : ''
+	}
+};
+
+var selectedPic = epidiascope.filmstrips[epidiascope.selectedIndex];
+var pid  = "{{photo.id}}";
+function echoFocus(){
+	var _url = "/slide/data/"+pid;
+
+	getData.curUrl = _url;
+	aimmPic._getJsData(_url,getData.fillData);
+
+	epidiascope.PVUrl_m = dataInfo.others.PVCountUrl_m;
+	epidiascope.PVUrl_a = dataInfo.others.PVCountUrl_a;
+
+	if(dataInfo.others.downloadPic===true)
+		document.getElementById("downloadPicObj").style.display="inline";
+
+	window.scrollTo(0,130);
+};
+
+//下载图片
+function downloadPic(){
+	alert("暂不提供下载，请切换浏览全部图片模式用鼠标右键保存至本地！");
+	return;
+};
+
+function next_jstoflash(){
+	if(getData.nextUrl.length <= 0){
+		return;
+	}else{
+		epidiascope.ImgObj1.src = "http://a.aimm-img.com/images/news_mj_005.gif";
+		aimmPic._getJsData(getData.nextUrl,function(){getData.fillData(0);});
+	}
+}
+
+function pre_jstoflash(){
+	if(getData.preUrl.length <= 0){
+		return;
+	}else{
+		epidiascope.ImgObj1.src = "http://a.aimm-img.com/images/news_mj_005.gif";
+		aimmPic._getJsData(getData.preUrl,function(){getData.fillData(1)});
+	}
+}
+
+var sendT = {
+	getHeader : function(){
+		if(dataInfo.title!=epidiascope.filmstrips[epidiascope.selectedIndex].title) {
+			return dataInfo.title + '-' + epidiascope.filmstrips[epidiascope.selectedIndex].title;
+		} else {
+			return epidiascope.filmstrips[epidiascope.selectedIndex].title;
+		}
+	},
+	getFirstImgSrc : function(){
+		return epidiascope.ImgObj1.src;
+	}
+}
+echoFocus();
+
+//浏览次数
+$(document).ready(function() {
+	var rand = Math.ceil(Math.random() * 10);
+	$.get("/slide/count/" + pid + '?' + rand, function(data){
+		$('#viewData').html(data);
+	});
+});
+
+function postDigg(ftype,aid) {
+	document.getElementById('likeData').className='already';
+	var taget_obj = document.getElementById('likeData');
+	var saveid = GetCookie('diggid');
+
+	if(saveid != null) {
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = ''; j = 1;
+		for(i = saveids.length - 1; i>=0; i--) {
+			if(saveids[i] == aid && hasid) {
+				continue;
+			} else {
+				if(saveids[i] == aid && !hasid) hasid = true;
+				saveid += (saveid == '' ? saveids[i] : ',' + saveids[i]); j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) {
+			alert("您已经喜欢过了哦！"); return;
+		} else {
+			saveid += ',' + aid;
+		}
+		SetCookie('diggid',saveid,1);
+	} else {
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new AimmAjax(taget_obj,false,false,'','','');
+	var url = "/slide/upclike/"+aid;
+	myajax.SendGet2(url);
+	AimmXHTTP = null;
+}
+
+function getLike(aid)
+{
+	var taget_obj = document.getElementById('likeData');
+	myajax = new AimmAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/slide/like/"+aid);
+	AimmXHTTP = null;
+}
+
+getLike("{{photo.id}}");
+-->
+</script>
+{% endblock %}

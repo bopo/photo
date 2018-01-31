@@ -1,0 +1,43 @@
+[[source]]
+
+url = "http://mirrors.aliyun.com/pypi/simple/"
+verify_ssl = false
+name = "pypi"
+
+
+[packages]
+
+django = "*"
+pillow = "*"
+markdown = "*"
+pygments = "*"
+gunicorn = "*"
+easy-thumbnails = "*"
+django-suit = "*"
+django-attachments = "*"
+django-userena = "*"
+django-ckeditor = "*"
+django-debug-toolbar = "*"
+django-compressor = "*"
+django-filebrowser = "*"
+django-taggit = "*"
+django-taggit-templatetags = "*"
+django-pagination = "*"
+django-mptt = "*"
+"django-select2" = "*"
+django-filer = "*"
+django-suit-ckeditor = "*"
+django-suit-redactor = "*"
+channels = "*"
+django-baker = "*"
+gevent = "*"
+whitenoise = "*"
+
+
+[dev-packages]
+
+
+
+[requires]
+
+python_version = "3.6"

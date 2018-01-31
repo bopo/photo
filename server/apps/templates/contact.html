@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>Contact us</title>
+</head>
+<body>
+    
+    <h1>Contact us</h1>
+
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+
+    <form action="" method="post">
+    	{% csrf_token %} 
+        <ul>
+            {{ form.as_ul }}
+        </ul>
+        <input type="submit" value="Submit">
+    </form>
+
+</body>
+</html>
