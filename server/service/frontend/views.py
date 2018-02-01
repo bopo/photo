@@ -29,6 +29,8 @@ def home(request):
     menu = navigation()
     home = 1
 
+    title = "爱美眉 - 首页"
+
     for x in category:
         x.photos = x.photo_set.order_by('-id').all()[:8]
         # .values('id','title','cover','pub_date','likes','views','tags')
@@ -43,6 +45,8 @@ def category(request, slug):
     photo_list = category.photo_set.order_by('-id').all()
     paginator = Paginator(photo_list, 20)
     page = request.GET.get('page')
+    menu = navigation()
+    title = category.subtitle + " 爱美眉"
 
     try:
         photos = paginator.page(page)
@@ -51,8 +55,8 @@ def category(request, slug):
     except EmptyPage:
         photos = paginator.page(paginator.num_pages)
 
-    context = {'category': category, 'photos': photos, 'menu': navigation()}
-    return render(request, 'category.html', context)
+    # context = {'category': category, 'photos': photos, 'menu': navigation()}
+    return render(request, 'category.html', locals())
 
 
 # @cache_page(60 * 15)
@@ -65,6 +69,7 @@ def detail(request, id):
     except Photo.DoesNotExist:
         raise Http404
 
+    title = photo.title + " 爱美眉"
     context = {'tags': tags, 'photo': photo,
                'menu': navigation(), 'category': category}
     return render(request, 'detail.html', context)

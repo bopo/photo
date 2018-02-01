@@ -15,7 +15,7 @@ class RSS(Feed):
         items = cache.get('items')
 
         if items == None:
-            items = Photo.objects.order_by('-pub_date')[:20]
+            items = Photo.objects.order_by('-created')[:20]
             cache.set('items', items, 30)
 
         return items

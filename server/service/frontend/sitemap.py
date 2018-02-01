@@ -1,15 +1,13 @@
 # sitemaps.py
-from django.contrib import sitemaps
-from django.core.urlresolvers import reverse
 from .models import Photo
+from django.contrib.sitemaps import Sitemap
 
-
-class PhotoViewSitemap(sitemaps.Sitemap):
+class PhotoSitemap(Sitemap):
     changefreq = "never"
     priority = 0.5
 
     def items(self):
-        return Photo.objects.all()
+        return Photo.objects.filter(status=True)
 
     def lastmod(self, obj):
-        return obj.pub_date
+        return obj.created

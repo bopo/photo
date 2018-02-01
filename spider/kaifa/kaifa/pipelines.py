@@ -5,8 +5,7 @@ import json
 import os
 import shutil
 import urllib.request, urllib.parse, urllib.error
-
-# from django.utils.encoding import from scrapy import log
+from pypinyin import pinyin, lazy_pinyin, Style
 from scrapy.contrib.pipeline.files import FilesPipeline
 from scrapy.contrib.pipeline.images import ImagesPipeline
 from scrapy.exceptions import DropItem
@@ -108,20 +107,18 @@ class KaifaTagsPipeline(object):
 
     def process_item(self, item, spider):
 
-        print(item['item_tags'], item['title'])
+        # print(item['item_tags'], item['title'])
 
         try:
-            photo = Photo.objects.get(title = item['title'])
+            photo = Photo.objects.get(id = item['iid'])
         except Exception as e:
             raise DropItem("Item contains no Photo")
-            return item
 
         print(item['item_tags'])
 
         for t in item['item_tags']:
             try:
-                default = {'title':t, 'slug': slugify(t)}
-                tags, _ = Tag.objects.get_or_create(title = t, defaults = default)
+                tags, _ = Tag.objects.get_or_create(title = t)
                 photo.tags.add(tags)
             except Exception as e:
                 raise DropItem("Item contains no Tags")
@@ -195,15 +192,15 @@ class KaifaFilesPipeline(FilesPipeline):
         except Exception as e:
             print(e, item['item_cats'])
 
-        for t in item['item_tags']:
+        for x in item['item_tags']:
+
             try:
-                default = {'title':t, 'slug': (slugify(unidecode(t)))}
-                tagset  = Tag.objects.get_or_create(title = t, defaults = default)
+                # default = {'title':x, 'slug': ''.join(lazy_pinyin(x))}
+                tagset, _  = Tag.objects.get_or_create(title = x, slug=''.join(lazy_pinyin(x)))
 
-                photo.tags.add(tagset[0])
-                cat.tag_set.add(tagset[0])
-
-                default = tagset = None
+                photo.tags.add(tagset)
+                # cat.tag_set.add(tagset)
+                # default = tagset = None
 
             except Exception as e:
                 pass

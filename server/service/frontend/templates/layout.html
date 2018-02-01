@@ -3,11 +3,11 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
-<title>{{head.title}}</title>
-<meta name="keywords" content="{{head.keywords}}" />
-<meta name="description" content="{{head.description}}" />
+<title>{{title}}</title>
+<meta name="keywords" content="{{keywords}}" />
+<meta name="description" content="{{description}}" />
 <link rel="stylesheet" type="text/css" href="{% static "frontend/css/style.css" %}" />
-<link rel="alternate" type="application/rss+xml" title="{{head.sitename}}" href="/feed/rss"/>
+<link rel="alternate" type="application/rss+xml" title="{{sitename}}" href="/feed/rss"/>
 <link type="image/x-icon" rel="shortcut icon" href="{% static "frontend/img/favicon.ico" %}" />
 <script type="text/javascript" src="{% static "frontend/js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static "frontend/js/jquery.lazyload.js" %}"></script>
@@ -17,7 +17,7 @@
 <div class="header">
 	<div class="top">
 		<div class="logo">
-			<a href="/" title="{{head.title}}"></a>
+			<a href="/" title="{{title}}"></a>
 		</div>
 		<div class="search-block">
 			<form method="get" id="searchform" action="{% url 'search' %}">

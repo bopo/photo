@@ -15,7 +15,6 @@ django-taggit
 django-taggit-templatetags
 django-pagination
 django-mptt
-django-select2
 django-filer
 django-suit_ckeditor
 django-suit_redactor
@@ -23,4 +22,6 @@ channels
 django-baker
 
 gevent
-whitenoisedjango_extensions
+pypinyin
+whitenoise
+django_extensions

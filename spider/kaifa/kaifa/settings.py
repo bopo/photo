@@ -86,7 +86,6 @@ ITEM_PIPELINES    = {
     'kaifa.pipelines.KaifaCoverPipeline': 200,
     'kaifa.pipelines.KaifaFilesPipeline': 300,
     'kaifa.pipelines.KaifaImagePipeline': 400,
-    'kaifa.pipelines.KaifaTagsPipeline' : 500,
 }
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

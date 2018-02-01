@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
+{% load thumbnail %}
 {% block content %}
-{# {% load thumbnail %} #}
 <div class="content clearfix">
+
 	<div class="mod-common clearfix">
 		<div class="mod-channel">
 			
@@ -22,7 +23,7 @@
 						<div class="list-box">
 							<div class="preview">
 								<a target="_blank" href="{% url 'detail' photo.id %}" title="{{ photos.title }}">
-									<img src="/static/image/grey.gif" data-original="{{photo.cover.url}}" border="0" alt="{{ photo.title }}">
+									<img src="/static/frontend/img/grey.gif" data-original="{% thumbnail photo.cover 318x439 %}" border="0" alt="{{ photo.title }}">
 								</a>
 								<div class="detail mt5">
 									<h3><a href="{% url 'detail' photo.id %}" title="{{ photo.title }}" target="_blank">{{ photo.title }}</a></h3>
@@ -84,6 +85,8 @@
 	</div>
 	<div class="mod-ad980"></div>
 </div>
+{% endblock %}
+{% block scripts %}
 <script type="text/javascript"> 
 $(document).ready(function() {$(window).scroll(loadData);});
 var counter = 4;
