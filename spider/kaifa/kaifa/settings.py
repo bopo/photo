@@ -12,7 +12,7 @@ import sys, os
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(HERE, '..', '..', '..', 'server'))
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings.dev'
 
 import django
 django.setup()
@@ -80,13 +80,13 @@ COOKIES_ENABLED = True
 
 MEDIA_ALLOW_REDIRECTS = True
 DOWNLOAD_TIMEOUT  = 500
-IMAGES_STORE      = '../stores/image'
-FILES_STORE       = '../stores/files'
+IMAGES_STORE      = 'store/photo'
+FILES_STORE       = 'store/files'
 ITEM_PIPELINES    = {
     'kaifa.pipelines.KaifaCoverPipeline': 200,
-    # 'kaifa.pipelines.KaifaImagesPipeline': 400,
     'kaifa.pipelines.KaifaFilesPipeline': 300,
-    # 'kaifa.pipelines.KaifaTagsPipeline': 500,
+    'kaifa.pipelines.KaifaImagePipeline': 400,
+    'kaifa.pipelines.KaifaTagsPipeline' : 500,
 }
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

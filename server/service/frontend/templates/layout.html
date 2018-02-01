@@ -1,0 +1,124 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>{{head.title}}</title>
+<meta name="keywords" content="{{head.keywords}}" />
+<meta name="description" content="{{head.description}}" />
+<link rel="stylesheet" type="text/css" href="{% static "frontend/css/style.css" %}" />
+<link rel="alternate" type="application/rss+xml" title="{{head.sitename}}" href="/feed/rss"/>
+<link type="image/x-icon" rel="shortcut icon" href="{% static "frontend/img/favicon.ico" %}" />
+<script type="text/javascript" src="{% static "frontend/js/jquery.js" %}"></script>
+<script type="text/javascript" src="{% static "frontend/js/jquery.lazyload.js" %}"></script>
+<script type="text/javascript" src="{% static "frontend/js/common.js" %}"></script>
+</head>
+<body>
+<div class="header">
+	<div class="top">
+		<div class="logo">
+			<a href="/" title="{{head.title}}"></a>
+		</div>
+		<div class="search-block">
+			<form method="get" id="searchform" action="{% url 'search' %}">
+        {% csrf_token %}
+				<input class="search-button" type="submit" value="">
+				<input type="text" id="keyword" name="keyword" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}">
+				<input type="hidden" name="pagesize" value="40">
+			</form>
+		</div>
+		<div class="social-icons">
+			<a href="/feed/rss" target="_blank" class="rss icon" title="RSS"></a>
+			<a href="javascript:void(0)" class="share icon" title="分享"></a>
+		</div>
+	</div>
+	<div class="main-nav">
+		<div class="main-menu">
+			<ul class="menu">
+				<li class="current"><a href="/">首页</a></li>
+				<li class="open">
+					<a href="javascript:void(0)">分类<i class="open-up icon"></i></a></a>
+					<ul class="sub-menu">
+						{% for sub in menu %}
+						<li><a href="{% url 'category' sub.slug %}">{{sub.title}}</a></li>
+						{% endfor %}
+					</ul>
+				</li>
+				<li><a href="/new.html">最新</a></li>
+				<li><a href="/hot.html">热门<i class="hot icon"></i></a></li>
+				<li><a href="/rec.html">精选</a></li>
+			</ul>
+			<div class="menu-right">
+				<a href="/jump/mail" target="_blank"><i class="icon i-mail"></i>邮箱订阅</a>
+				<span>|</span>
+				<a href="javascript:void(0)" id="favorites"><i class="icon i-fav"></i>加入收藏</a>
+				<span>|</span>
+				<a href="javascript:void(0)"><i class="icon i-opinion"></i>留言建议</a>
+			</div>
+		</div>
+		<div class="main-menu-bg"></div>
+	</div>
+</div>
+{% block content %}
+
+{% endblock %}
+<div class="footer mt50">
+	{% if home %}
+	<div class="foot-info clearfix">
+		<div class="info-ctn clearfix">
+			<dl class="info-list clearfix">
+				<dt><h1>关于</h1></dt>
+				<dd><a href="">关于我们</a></dd>
+				<dd><a href="">流量合作</a></dd>
+				<dd><a href="">广告投放</a></dd>
+				<dd><a href="">网站地图</a></dd>
+			</dl>
+			<dl class="info-list bgnone clearfix">
+				<dt><h1>关注我们</h1></dt>
+				<dd><a href="/jump/weibo" target="_blank"><i class="icon weibo"></i>官方微博</a></dd>
+				<dd><a href="/jump/mail" target="_blank"><i class="icon email"></i>邮箱订阅</a></dd>
+				<dd><a href="/feed/rss" target="_blank"><i class="icon rss"></i>RSS订阅</a></dd>
+				<dd><a href="javascript:void(0)" id="favorites"><i class="icon favor"></i>加入收藏</a></dd>
+			</dl>
+			<div class="foot_logo">aimm</div>
+			<dl class="info-list links clearfix">
+				<dt class="title"><h1>友情链接</h1></dt>
+				{% for link in weblink %}
+				<dd><a href='{{link.url}}' target='_blank'>{{link.name}}</a></dd>
+				{% endfor %}
+			</dl>
+			<dl class="info-list hezuo bgnone clearfix">
+				<dt><h1>合作伙伴</h1></dt>
+        {% for link in weblink %}
+				<dd><a href='{{link.url}}' target='_blank'>{{link.name}}</a></dd>
+        {% endfor %}
+			</dl>
+		</div>
+	</div>
+	{% endif %}
+	<div class="foot-copy"><p>Copyrights &copy; 2012-2013 ibopo.oicp.net, All rights reserved. </p>
+	</div>
+</div>
+
+{% if home %}
+<div class="plot clearfix" style="display:none">
+	<ul>
+    {% for sub in menu%}
+		<li><a rel="#{{sub.slug}}" class="qc" href="javascript:void(0)">{{sub.title}}</a></li>
+    {% endfor %}
+	</ul>
+</div>
+{% endif %}
+
+<script type="text/javascript">$(document).ready(function(){aimm.init();});</script>
+<!--[if IE 6]>
+<script type="text/javascript">try{document.execCommand('BackgroundImageCache',false,true)}catch(e){}</script>
+<script type="text/javascript"src="/static/js/DD_belatedPNG.js"></script>
+<script>DD_belatedPNG.fix('.icon,.foot_logo');</script>
+<![endif]-->
+<div style="display:none"></div>
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>

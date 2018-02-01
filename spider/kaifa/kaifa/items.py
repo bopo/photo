@@ -7,7 +7,7 @@
 
 import scrapy
 from scrapy_djangoitem import DjangoItem
-from apps.models import Photo
+from service.frontend.models import Photo
 
 class KaifaItem(DjangoItem):
     django_model = Photo
@@ -17,3 +17,4 @@ class KaifaItem(DjangoItem):
     item_cats = scrapy.Field()
     item_tags = scrapy.Field()
     url = scrapy.Field()
+    iid = scrapy.Field()

@@ -1,1 +1,1 @@
-gunicorn --worker-class=gevent wsgi:application -b 127.0.0.1:8001
+gunicorn --worker-class=gevent config.wsgi:application -b 127.0.0.1:5000

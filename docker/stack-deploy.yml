@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:alpine
+  
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - django
+    ports:
+      - "80:80"
+
+  postgres:
+    image: postgres:alpine
+    volumes:
+      - /srv/docker/postgres:/var/lib/postgresql
+    env_file: .env
+
+  django:
+    image: sounds:django
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - /srv/docker/django/app:/app
+      - /srv/docker/django/log:/var/log
+    env_file: .env
+    command: /gunicorn.sh

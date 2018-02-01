@@ -24,3 +24,6 @@ frontend/static/frontend/lib/
 restful/contrib/restauth/tests/__pycache__/
 runtime/
 tests/__pycache__/
+
+spider/kaifa/stores/
+spider/kaifa/store/
